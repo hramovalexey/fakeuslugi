@@ -34,4 +34,8 @@ public class UserService implements UserDetailsService {
         }
         return user;
     }
+
+    public boolean isExistingName(String name){
+        return userDao.findByUsername(name) != null;
+    }
 }

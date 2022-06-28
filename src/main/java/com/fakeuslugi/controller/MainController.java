@@ -18,12 +18,14 @@ public class MainController {
 
     @GetMapping
     public String mainPage() {
-        TestEntity newEntity = new TestEntity();
+        // TestEntity newEntity = new TestEntity();
         // newEntity.setTestField(4L);
-        newEntity.setContent("CONTENT2");
+        // newEntity.setContent("CONTENT2");
         // testDao.saveTest(newEntity);
-        testDao.findById(3L);
-        log.error("INSIDE CONTROLLER");
+        // testDao.findById(3L);
+        log.error("INSIDE MAIN CONTROLLER");
+
+
         return "mainpage";
     }
 }

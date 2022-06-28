@@ -5,18 +5,23 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import javax.servlet.http.HttpServletResponse;
+
 
 @Configuration
 @EnableWebSecurity
@@ -55,14 +60,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
         // Set permissions on endpoints
-        http.authorizeRequests()
+        http.authorizeRequests().antMatchers("/auth/testuser").authenticated()
+        // http.authorizeRequests().anyRequest().authenticated();
                 //.antMatchers("/stocker/**").permitAll()
-                .antMatchers("/stocker/sec/**/buy").authenticated()
-                .antMatchers("/stocker/port/list").authenticated()
-                .antMatchers("/stocker/port/details").authenticated()
-                .antMatchers("/stocker/port/stat").authenticated()
-                .antMatchers("/dev").authenticated()
-                .antMatchers("/stocker/login/testLogin").authenticated()
+
                 .anyRequest().permitAll();
 
         // JWT filter
@@ -70,15 +71,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 UsernamePasswordAuthenticationFilter.class);
     }
 
-    /*// TODO replace with BCryptPasswordEncoder for prod
+//*
+// TODO replace with BCryptPasswordEncoder for prod
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // return NoOpPasswordEncoder.getInstance();
-        return new BCryptPasswordEncoder();
-    }*/
+        return NoOpPasswordEncoder.getInstance();
+        // return new BCryptPasswordEncoder();
+    }
 
 
-    // TODO Used by spring security if CORS is enabled.!!!!!!!!!! STUDY THIS !!!!!!!!!!!!
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source =
@@ -98,6 +99,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    // TODO
     // see https://www.toptal.com/spring/spring-security-tutorial
     @Bean
     GrantedAuthorityDefaults grantedAuthorityDefaults() {

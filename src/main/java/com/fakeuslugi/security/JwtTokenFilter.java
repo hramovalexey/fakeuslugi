@@ -47,13 +47,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = header.split(" ")[1].trim(); // TODO: ARE WE SHURE????
+        String token = header.split(" ")[1].trim(); // TODO
         if (!jwtTokenUtil.validate(token)) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }
 
-        // Get user identity and set it on the spring security context
         User userDetails = userDao.findByUsername(jwtTokenUtil.getUsername(token));
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null,

@@ -1,13 +1,12 @@
-package com.fakeuslugi.security;
+package com.fakeuslugi.controller.model;
 
 import lombok.Data;
 import lombok.NonNull;
 
 @Data
-public class AuthRequest {
-    @NonNull
+public class UserModel {
     private String username;
-    @NonNull
     private String password;
+    private String email; // TODO validate
 
 }

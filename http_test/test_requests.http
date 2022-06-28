@@ -1,0 +1,39 @@
+### Test auth register
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{"a":"d"}
+
+
+
+### Test auth register
+POST http://localhost:8080/auth/register
+Content-Type: text/plain
+
+{
+    "username": "newuser1",
+    "password": "1",
+    "email": "mymail@somedomain.jfjf"
+}
+
+
+###
+{
+    "username": "newuser1",
+    "password": "1",
+    "email": "mymail@somedomain.jfjf"
+}
+
+### Test auth login
+GET http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+    "username": "newuser1",
+    "password": "1"
+}
+
+
+### Test testuser
+GET http://localhost:8080/auth/testuser
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0VXNlciIsImlzcyI6ImZha2V1c2x1Z2kiLCJpYXQiOjE2NTYzNTYwMTUsImV4cCI6MTY1NjM1OTYxNX0.4yvV4yfL8uz1_7XC5a-4VWzhJGybsdiqNEJw8H3L9aVc8EWlGjdD_IrIuW67TvzRVPUd2rskaCXN9PGs0Mckrw

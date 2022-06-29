@@ -1,6 +1,7 @@
 package com.fakeuslugi.security;
 
 
+import com.fakeuslugi.security.dao.Customer;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -22,9 +23,9 @@ public class JwtTokenUtil {
     private final String JWT_SECRET = "lpulD3JK56m6wTTgsNFhqzjqP";
     private final String JWT_ISSUER = "fakeuslugi";
 
-    public String generateAccessToken(User user) {
+    public String generateAccessToken(Customer customer) {
         String token = Jwts.builder()
-                .setSubject(user.getUsername())
+                .setSubject(customer.getUsername())
                 .setIssuer(JWT_ISSUER)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1 * 60 * 60 * 1000))

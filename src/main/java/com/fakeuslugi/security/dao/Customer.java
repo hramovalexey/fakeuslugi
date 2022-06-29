@@ -1,23 +1,26 @@
-package com.fakeuslugi.security;
+package com.fakeuslugi.security.dao;
 
+import com.fakeuslugi.seasonservice.dao.ProvidedService;
+import com.fakeuslugi.security.Authority;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 
+// @Table(name="user_table")
 @Entity
-@Table(name="user_table")
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
-public class User implements UserDetails {
+public class Customer implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
-    private long userId;
+    private long id;
 
     @NonNull
     @Column(nullable = false)
@@ -35,8 +38,15 @@ public class User implements UserDetails {
     private String password;
 
     @NonNull
-    @Column(nullable = false, unique = true)
-    private String username;
+    @Column(nullable = false)
+    private String name;
+
+    @NonNull
+    @Column(nullable = false)
+    private String secondName;
+
+    @Column(nullable = true)
+    private String thirdName;
 
     private boolean accountNonExpired;
 
@@ -47,8 +57,22 @@ public class User implements UserDetails {
     private boolean enabled;
 
     @NonNull
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @NonNull
+    @Column(nullable = false)
+    private ZonedDateTime registrationTime;
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+/*    @OneToMany(mappedBy = "user")
+    private Collection<ProvidedService> providedService;*/
+
+
 
     // TODO tether
     /*@OneToMany(mappedBy = "user", fetch= FetchType.LAZY)

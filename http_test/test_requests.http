@@ -2,38 +2,37 @@
 POST http://localhost:8080/auth/register
 Content-Type: application/json
 
-{"a":"d"}
+{
+    "email": "mymail@somedomain.jfjf"
+}
 
 
 
 ### Test auth register
 POST http://localhost:8080/auth/register
-Content-Type: text/plain
+Content-Type: application/json
 
 {
-    "username": "newuser1",
-    "password": "1",
-    "email": "mymail@somedomain.jfjf"
-}
-
-
-###
-{
-    "username": "newuser1",
+    "name": "newuser3",
+    "secondName": "second",
+    "thirdName": "third",
     "password": "1",
     "email": "mymail@somedomain.jfjf"
 }
 
 ### Test auth login
-GET http://localhost:8080/auth/login
+POST http://localhost:8080/auth/login
 Content-Type: application/json
 
 {
-    "username": "newuser1",
-    "password": "1"
+    "password": "1",
+    "email": "mymail@somedomain.jfjf"
 }
 
 
 ### Test testuser
 GET http://localhost:8080/auth/testuser
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0VXNlciIsImlzcyI6ImZha2V1c2x1Z2kiLCJpYXQiOjE2NTYzNTYwMTUsImV4cCI6MTY1NjM1OTYxNX0.4yvV4yfL8uz1_7XC5a-4VWzhJGybsdiqNEJw8H3L9aVc8EWlGjdD_IrIuW67TvzRVPUd2rskaCXN9PGs0Mckrw
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJteW1haWxAc29tZWRvbWFpbi5qZmpmIiwiaXNzIjoiZmFrZXVzbHVnaSIsImlhdCI6MTY1NjUyMjI0NywiZXhwIjoxNjU2NTI1ODQ3fQ.lyZDr6047_Plr9wGlGIjqWKuKUi6H-JkNK7DKD_cwLniwz1ycUH5gFubeOI7T2rYnQaO_CuT0aeBmxbve8MJuA
+
+### Test testuser no auth
+GET http://localhost:8080/auth/testuser

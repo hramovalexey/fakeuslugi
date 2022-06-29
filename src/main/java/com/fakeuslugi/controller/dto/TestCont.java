@@ -1,7 +1,6 @@
-package com.fakeuslugi.controller.model;
+package com.fakeuslugi.controller.dto;
 
 import lombok.Data;
-import lombok.NonNull;
 
 @Data
 public class TestCont {

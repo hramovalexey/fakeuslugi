@@ -1,6 +1,7 @@
 package com.fakeuslugi.security;
 
-import com.fakeuslugi.security.dao.UserDao;
+import com.fakeuslugi.security.dao.Customer;
+import com.fakeuslugi.security.dao.CustomerDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,11 +23,11 @@ import java.util.Objects;
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    private final UserDao userDao;
+    private final CustomerDao customerDao;
     private final static JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
 
-    public JwtTokenFilter(UserDao userDao){
-        this.userDao = userDao;
+    public JwtTokenFilter(CustomerDao customerDao){
+        this.customerDao = customerDao;
     }
 
     @Override
@@ -53,16 +54,16 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        User userDetails = userDao.findByUsername(jwtTokenUtil.getUsername(token));
+        Customer customerDetails = customerDao.findByEmail(jwtTokenUtil.getUsername(token));
 
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
-                userDetails == null ? Collections.emptyList() : userDetails.getAuthorities());
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(customerDetails, null,
+                customerDetails == null ? Collections.emptyList() : customerDetails.getAuthorities());
 
         authentication.setDetails(
                 new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        httpServletRequest.setAttribute("user", userDetails);
+        httpServletRequest.setAttribute("user", customerDetails);
         filterChain.doFilter(httpServletRequest, httpServletResponse);
 
     }

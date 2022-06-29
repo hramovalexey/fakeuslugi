@@ -1,18 +1,16 @@
 package com.fakeuslugi.security;
 
-import com.fakeuslugi.security.dao.UserDao;
+import com.fakeuslugi.security.dao.CustomerDao;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -27,20 +25,20 @@ import javax.servlet.http.HttpServletResponse;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private UserService userService;
-    private UserDao userDao; // TODO take off?
+    private CustomerService customerService;
+    private CustomerDao customerDao; // TODO take off?
     private JwtTokenFilter jwtTokenFilter;
 
-    public SecurityConfiguration(UserDao userDao, UserService userService, JwtTokenFilter jwtTokenFilter) {
-        this.userDao = userDao;
-        this.userService = userService;
+    public SecurityConfiguration(CustomerDao customerDao, CustomerService customerService, JwtTokenFilter jwtTokenFilter) {
+        this.customerDao = customerDao;
+        this.customerService = customerService;
         this.jwtTokenFilter = jwtTokenFilter;
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService);
+        auth.userDetailsService(customerService);
     }
 
     @Override

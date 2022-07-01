@@ -15,7 +15,7 @@
 
     <mvc:annotation-driven/>
 
-    <context:property-placeholder location="classpath:config/application.properties"/>
+    <context:property-placeholder location="classpath:config/application.properties" file-encoding="Windows-1251"/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/view/"/>

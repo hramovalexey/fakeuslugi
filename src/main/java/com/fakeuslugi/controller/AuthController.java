@@ -29,7 +29,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/auth")
 @Slf4j
-public class AuthController {
+public class AuthController extends AbstractController {
     @Autowired
     private CustomerService customerService;
 
@@ -40,7 +40,6 @@ public class AuthController {
 
     @PostMapping(value = "register", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> register(@Valid @RequestBody CustomerDto customerRegRequest) {
-        // UserModel newUser = new UserModel("testUser", "passs", "f@mail.fff");
         if (customerService.isExistingUser(customerRegRequest.getEmail())) { // TODO move to service
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User with such email already exists");
         }
@@ -75,12 +74,12 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Something went wrong");
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    /*@ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<HashMap<String, List<String>>> handleValidationException(MethodArgumentNotValidException e) {
         HashMap<String, List<String>> errors = new HashMap<>();
         for (ObjectError error : e.getBindingResult().getAllErrors()) {
             errors.computeIfAbsent("error", k -> new ArrayList<>()).add(error.getDefaultMessage());
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
-    }
+    }*/
 }

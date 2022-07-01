@@ -1,4 +1,4 @@
-### Test auth register
+### Test auth invalid register
 POST http://localhost:8080/auth/register
 Content-Type: application/json
 
@@ -36,3 +36,22 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJteW1haWxAc29tZWRvbWFpbi5qZ
 
 ### Test testuser no auth
 GET http://localhost:8080/auth/testuser
+
+### service order with no auth
+POST http://localhost:8080/service/order
+Content-Type: application/json
+
+{
+    "serviceId": 1,
+    "userComment": "COMMENT!!!"
+}
+
+### service order with auth
+POST http://localhost:8080/service/order
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJteW1haWxAc29tZWRvbWFpbi5qZmpmIiwiaXNzIjoiZmFrZXVzbHVnaSIsImlhdCI6MTY1NjYxNjY4MCwiZXhwIjoxNjU2NjIwMjgwfQ.pbWjR5_WzcKRbuQXop1vhqJxvzYeR-8MnEJZ5l2NnjItR4viV3o18BnOhTFR90rdw5cmTI24_e87UrpiruamPQ
+
+{
+    "serviceId": 1,
+    "userComment": "COMMENT!!!"
+}

@@ -3,6 +3,7 @@ package com.fakeuslugi.seasonservice.dao;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Positive;
 import java.util.Collection;
 
 @Entity
@@ -19,6 +20,7 @@ public class SeasonService {
     private String name;
 
     @NonNull
+    @Positive(message = "service limit value must be positive")
     @Column (nullable = false)
     private long serviceLimit;
 

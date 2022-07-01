@@ -2,6 +2,7 @@ package com.fakeuslugi.seasonservice.dao;
 
 import com.fakeuslugi.security.dao.Customer;
 import lombok.Data;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
@@ -15,7 +16,7 @@ public class ProvidedService {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "provided_service_generator")
-    private long userId;
+    private long id;
 
     @Column
     private String userComment;

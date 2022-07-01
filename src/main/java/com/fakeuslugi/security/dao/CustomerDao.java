@@ -15,15 +15,13 @@ public class CustomerDao {
     private SessionFactory sessionFactory;
 
     public Customer createCustomer(Customer newCustomer) {
-
-
         sessionFactory.getCurrentSession().save(newCustomer);
-        log.debug("New user created " + newCustomer.toString());
+        log.debug("New customer created " + newCustomer.toString());
         return newCustomer;
     }
 
     public Customer findByEmail(String emailRequest) {
-        Query<Customer> query = sessionFactory.getCurrentSession().createQuery("from Customer as u where u.email = :emailRequest");
+        Query<Customer> query = sessionFactory.getCurrentSession().createQuery("from Customer as c where c.email = :emailRequest");
         query.setParameter("emailRequest", emailRequest);
         Customer result = query.uniqueResult();
         return result;

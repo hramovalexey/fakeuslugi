@@ -63,7 +63,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        httpServletRequest.setAttribute("user", customerDetails);
+        httpServletRequest.setAttribute("customer", customerDetails);
         filterChain.doFilter(httpServletRequest, httpServletResponse);
 
     }

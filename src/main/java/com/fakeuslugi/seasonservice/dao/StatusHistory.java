@@ -1,9 +1,6 @@
 package com.fakeuslugi.seasonservice.dao;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
@@ -11,13 +8,14 @@ import java.time.ZonedDateTime;
 @Entity
 @Data
 @RequiredArgsConstructor
-// @NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
+@NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
 public class StatusHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "status_history_generator")
     private long id;
 
+    @NonNull
     @Column(nullable = false)
     private ZonedDateTime timestamp;
 
@@ -27,6 +25,7 @@ public class StatusHistory {
     @JoinColumn(nullable = false)
     private ProvidedService providedService;
 
+    @NonNull
     @ManyToOne
     @JoinColumn(nullable = false)
     private Status status;

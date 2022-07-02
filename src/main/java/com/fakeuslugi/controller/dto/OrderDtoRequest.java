@@ -7,7 +7,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.PositiveOrZero;
 
 @Data
-public class OrderDto {
+public class OrderDtoRequest {
 
     @PositiveOrZero(message = "id cannot be negative")
     private long serviceId;

@@ -16,7 +16,7 @@ import java.util.HashSet;
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
-public class Customer implements UserDetails {
+public class Customer implements CustomerInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
@@ -69,18 +69,7 @@ public class Customer implements UserDetails {
         return email;
     }
 
-/*    @OneToMany(mappedBy = "user")
-    private Collection<ProvidedService> providedService;*/
-
-
-
-    // TODO tether
-    /*@OneToMany(mappedBy = "user", fetch= FetchType.LAZY)
-    private Collection<Portfolio> portfolios;*/
-
-    // TODO delete?
-   /* public String toString(){
-        return String.format("userId = %d, authority = %s, password = secret, username = %s, accountNonExpired = %b, accountNonLocked = %b, credentialsNonExpired = %b, enabled = %b",
-                getUserId(), getAuthority(), getUsername(), isAccountNonExpired(), isAccountNonLocked(), isCredentialsNonExpired(), isEnabled());
-    }*/
+    @ToString.Exclude
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    private Collection<ProvidedService> providedService;
 }

@@ -1,6 +1,9 @@
 package com.fakeuslugi.seasonservice;
 
-import com.fakeuslugi.controller.dto.OrderDto;
+import com.fakeuslugi.controller.dto.OrderDtoRequest;
+import com.fakeuslugi.controller.dto.OrderDtoResponse;
+import com.fakeuslugi.controller.dto.ServiceDtoResponse;
+import com.fakeuslugi.controller.dto.StatusHistoryDtoResponse;
 import com.fakeuslugi.seasonservice.dao.*;
 import com.fakeuslugi.seasonservice.exception.SeasonServiceException;
 import com.fakeuslugi.security.dao.Customer;
@@ -11,6 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 // Handling season services ordered by customers
 @Service
@@ -28,26 +34,58 @@ public class OrderService {
     private String DEFAULT_CREATION_COMMENT;
 
     @Transactional
-    public ProvidedService createOrder(OrderDto orderDto, Customer customer) {
-        SeasonService seasonService = seasonServiceDao.findById(orderDto.getServiceId());
+    public ProvidedService createOrder(OrderDtoRequest orderDtoRequest, Customer customer) {
+        SeasonService seasonService = seasonServiceDao.findById(orderDtoRequest.getServiceId());
         if (seasonService == null) {
             throw new SeasonServiceException("Such service doesn`t exist", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        // TODO ADD USER COMMENT AND SEASON SERVICE!!!!
+        long qtyProvidedServices = seasonServiceDao.countOrdersByServiceId(orderDtoRequest.getServiceId());
+        if (qtyProvidedServices >= seasonService.getServiceLimit()) {
+            // TODO send email
+            throw new SeasonServiceException("Limit of provided services exceeded. Check your email", HttpStatus.FORBIDDEN);
+        }
         ProvidedService providedService = new ProvidedService();
         providedService.setCustomer(customer);
         providedService.setSeasonService(seasonService);
-        providedService.setUserComment(orderDto.getUserComment());
+        providedService.setUserComment(orderDtoRequest.getUserComment());
         StatusHistory statusHistory = new StatusHistory(ZonedDateTime.now(), statusDao.getInitialStatus());
         statusHistory.setExecutorComment(DEFAULT_CREATION_COMMENT);
         statusHistory.setProvidedService(providedService);
         providedService = seasonServiceDao.createProvidedService(providedService);
-        statusHistory = statusHistoryDao.createStatusHistory(statusHistory);
+        statusHistoryDao.createStatusHistory(statusHistory); // TODO add logging
 
         // TODO try to throw unchecked exception from here
 
         // providedService.getStatusHistory().add(statusHistory);
         return providedService;
+    }
+
+    public List<ServiceDtoResponse> getServiceList() {
+        List<SeasonService> seasonServiceList = seasonServiceDao.getSeasonServiceList();
+        return mapSeasonServiceToServiceDtoResponce(seasonServiceList);
+    }
+
+    @Transactional
+    public List<OrderDtoResponse> getOrderList(Customer customer) {
+        long statusId = statusDao.getInitialStatus().getId();
+        List<ProvidedService> orderList = seasonServiceDao.getOrderList(customer.getId(), statusId);
+        return mapProvidedServiceToOrderDtoResponse(orderList);
+    }
+
+    private List<ServiceDtoResponse> mapSeasonServiceToServiceDtoResponce(List<SeasonService> seasonServiceList) {
+        ArrayList<ServiceDtoResponse> serviceDtoResponseList = new ArrayList<>(seasonServiceList.size());
+        for (SeasonService seasonService : seasonServiceList) {
+            long ordersQty = seasonServiceDao.countOrdersByServiceId(seasonService.getId());
+            long currentLimit = seasonService.getServiceLimit() - ordersQty;
+            serviceDtoResponseList.add(new ServiceDtoResponse(seasonService, currentLimit));
+        }
+        return serviceDtoResponseList;
+    }
+
+    public List<OrderDtoResponse> mapProvidedServiceToOrderDtoResponse(List<ProvidedService> providedServiceList) {
+        return providedServiceList.stream()
+                .map(serviceItem -> new OrderDtoResponse(serviceItem, serviceItem.getCustomer(), serviceItem.getStatusHistory()))
+                .collect(Collectors.toList());
     }
 
 }

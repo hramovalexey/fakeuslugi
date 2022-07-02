@@ -1,0 +1,37 @@
+package com.fakeuslugi.controller.dto;
+
+import com.fakeuslugi.seasonservice.dao.OrderInfo;
+import com.fakeuslugi.seasonservice.dao.SeasonServiceInfo;
+import com.fakeuslugi.seasonservice.dao.StatusHistory;
+import com.fakeuslugi.seasonservice.dao.StatusHistoryInfo;
+import com.fakeuslugi.security.dao.CustomerInfo;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Getter
+public class OrderDtoResponse {
+    private final String timestamp;
+    private final long id;
+    private final String name;
+    private final String userComment;
+    private final CustomerDtoResponse customer;
+    private final List<StatusHistoryDtoResponse> statusHistory;
+
+    public OrderDtoResponse(OrderInfo providedService, CustomerInfo customer, List<StatusHistory> statusHistoryList) {
+        this.timestamp = providedService.getTimestamp().toString();
+        this.id = providedService.getId();
+        this.name = providedService.getName();
+        this.userComment = providedService.getUserComment();
+        this.customer = new CustomerDtoResponse(customer);
+        this.statusHistory = createHistoryList(statusHistoryList);
+    }
+
+    private List<StatusHistoryDtoResponse> createHistoryList(List<StatusHistory> statusHistoryList) {
+        return statusHistoryList.stream().map(StatusHistoryDtoResponse::new).collect(Collectors.toList());
+    }
+}

@@ -6,7 +6,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class CustomerDto {
+public class CustomerDtoRequest {
     @NotBlank(message = "name is required")
     private String name;
 

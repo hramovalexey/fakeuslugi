@@ -10,7 +10,7 @@ import java.util.Collection;
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
-public class SeasonService {
+public class SeasonService implements SeasonServiceInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "season_service_generator")
     private long id;
@@ -24,6 +24,8 @@ public class SeasonService {
     @Column (nullable = false)
     private long serviceLimit;
 
-    @OneToMany(mappedBy = "seasonService")
+    @ToString.Exclude
+    @OneToMany(mappedBy = "seasonService", fetch = FetchType.LAZY)
     private Collection<ProvidedService> providedService;
+
 }

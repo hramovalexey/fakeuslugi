@@ -1,6 +1,6 @@
 package com.fakeuslugi.security;
 
-import com.fakeuslugi.controller.dto.CustomerDto;
+import com.fakeuslugi.controller.dto.CustomerDtoRequest;
 import com.fakeuslugi.security.dao.Customer;
 import com.fakeuslugi.security.dao.CustomerDao;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ public class CustomerService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public UserDetails createCustomer(String authorityName, CustomerDto customerRegRequest){
+    public UserDetails createCustomer(String authorityName, CustomerDtoRequest customerRegRequest){
 
 
         // TODO make static factory

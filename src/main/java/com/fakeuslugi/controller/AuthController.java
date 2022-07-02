@@ -1,7 +1,7 @@
 package com.fakeuslugi.controller;
 
-import com.fakeuslugi.controller.dto.AuthDto;
-import com.fakeuslugi.controller.dto.CustomerDto;
+import com.fakeuslugi.controller.dto.AuthDtoRequest;
+import com.fakeuslugi.controller.dto.CustomerDtoRequest;
 import com.fakeuslugi.security.Authority;
 import com.fakeuslugi.security.JwtTokenUtil;
 import com.fakeuslugi.security.dao.Customer;
@@ -16,15 +16,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/auth")
@@ -39,7 +34,7 @@ public class AuthController extends AbstractController {
     private final static JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
 
     @PostMapping(value = "register", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> register(@Valid @RequestBody CustomerDto customerRegRequest) {
+    public ResponseEntity<String> register(@Valid @RequestBody CustomerDtoRequest customerRegRequest) {
         if (customerService.isExistingUser(customerRegRequest.getEmail())) { // TODO move to service
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User with such email already exists");
         }
@@ -48,9 +43,9 @@ public class AuthController extends AbstractController {
     }
 
     @PostMapping(value = "login", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> loginUser(@Valid @RequestBody AuthDto authDto) {
+    public ResponseEntity<String> loginUser(@Valid @RequestBody AuthDtoRequest authDtoRequest) {
         try {
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(authDto.getEmail(), authDto.getPassword());
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(authDtoRequest.getEmail(), authDtoRequest.getPassword());
             Authentication authenticate = authenticationManager.authenticate(authToken);
             Customer customer = (Customer) authenticate.getPrincipal();
             String jwtToken = jwtTokenUtil.generateAccessToken(customer);
@@ -66,7 +61,7 @@ public class AuthController extends AbstractController {
     @GetMapping("testuser")
     @ResponseBody
     public ResponseEntity<String> testUser(HttpServletRequest httpServletRequest) {
-        Customer customer = (Customer) httpServletRequest.getAttribute("user");
+        Customer customer = (Customer) httpServletRequest.getAttribute("customer");
         if (customer != null) {
             log.debug("User ID authenticated: " + customer.getId());
             return ResponseEntity.ok("Authenticated user: " + customer.toString());

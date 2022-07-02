@@ -47,9 +47,11 @@ public abstract class AbstractController {
 
     protected Customer findCustomer(HttpServletRequest httpServletRequest){
         Customer customer = (Customer) httpServletRequest.getAttribute("customer");
-        if (customer == null){
+        if (customer == null) {
             throw new UsernameNotFoundException("No such user registered!");
         }
         return customer;
     }
+
+    // TODO make common exception handler
 }

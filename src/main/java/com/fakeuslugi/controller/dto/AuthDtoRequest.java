@@ -6,7 +6,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class AuthDto {
+public class AuthDtoRequest {
 
     @NotBlank(message = "email is required")
     @Email(message = "invalid email")

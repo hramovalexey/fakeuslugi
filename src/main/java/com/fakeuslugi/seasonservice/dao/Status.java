@@ -19,6 +19,7 @@ public class Status {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "status")
+    @ToString.Exclude
+    @OneToMany(mappedBy = "status", fetch = FetchType.LAZY)
     private Collection<StatusHistory> statusHistory;
 }

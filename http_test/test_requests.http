@@ -8,7 +8,7 @@ Content-Type: application/json
 
 
 
-### Test auth register
+### Test user1 register
 POST http://localhost:8080/auth/register
 Content-Type: application/json
 
@@ -20,7 +20,20 @@ Content-Type: application/json
     "email": "mymail@somedomain.jfjf"
 }
 
-### Test auth login
+### Test user2 register
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+    "name": "newuser6",
+    "secondName": "family NAME",
+    "thirdName": "petrovich",
+    "password": "2",
+    "email": "petrovich@james.bond"
+}
+
+### Test auth user1 request
+# @name auth
 POST http://localhost:8080/auth/login
 Content-Type: application/json
 
@@ -29,10 +42,25 @@ Content-Type: application/json
     "email": "mymail@somedomain.jfjf"
 }
 
+### Test auth user2 request
+# @name auth
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+    "password": "2",
+    "email": "petrovich@james.bond"
+}
+
+
+
+### Save Authorization header
+@jwt = {{auth.response.headers.Authorization}}
+
 
 ### Test testuser
 GET http://localhost:8080/auth/testuser
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJteW1haWxAc29tZWRvbWFpbi5qZmpmIiwiaXNzIjoiZmFrZXVzbHVnaSIsImlhdCI6MTY1NjUyMjI0NywiZXhwIjoxNjU2NTI1ODQ3fQ.lyZDr6047_Plr9wGlGIjqWKuKUi6H-JkNK7DKD_cwLniwz1ycUH5gFubeOI7T2rYnQaO_CuT0aeBmxbve8MJuA
+Authorization: Bearer {{jwt}}
 
 ### Test testuser no auth
 GET http://localhost:8080/auth/testuser
@@ -46,12 +74,51 @@ Content-Type: application/json
     "userComment": "COMMENT!!!"
 }
 
-### service order with auth
+### service order11
 POST http://localhost:8080/service/order
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJteW1haWxAc29tZWRvbWFpbi5qZmpmIiwiaXNzIjoiZmFrZXVzbHVnaSIsImlhdCI6MTY1NjYxNjY4MCwiZXhwIjoxNjU2NjIwMjgwfQ.pbWjR5_WzcKRbuQXop1vhqJxvzYeR-8MnEJZ5l2NnjItR4viV3o18BnOhTFR90rdw5cmTI24_e87UrpiruamPQ
+Authorization: Bearer {{jwt}}
 
 {
     "serviceId": 1,
+    "userComment": "no mercy"
+}
+
+### service order2
+POST http://localhost:8080/service/order
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+{
+    "serviceId": 2,
+    "userComment": "give me"
+}
+
+### service order3
+POST http://localhost:8080/service/order
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+{
+    "serviceId": 3,
+    "userComment": "want this"
+}
+
+### service order with auth id 3
+POST http://localhost:8080/service/order
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+{
+    "serviceId": 3,
     "userComment": "COMMENT!!!"
 }
+
+### service list
+GET http://localhost:8080/service/list
+Content-Type: application/json
+
+### order list
+GET http://localhost:8080/service/orders
+Content-Type: application/json
+Authorization: Bearer {{jwt}}

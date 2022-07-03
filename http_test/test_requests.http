@@ -122,3 +122,6 @@ Content-Type: application/json
 GET http://localhost:8080/service/orders
 Content-Type: application/json
 Authorization: Bearer {{jwt}}
+
+### Test email
+GET http://localhost:8080/mail

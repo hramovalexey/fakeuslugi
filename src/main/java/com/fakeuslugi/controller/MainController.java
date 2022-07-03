@@ -1,5 +1,6 @@
 package com.fakeuslugi.controller;
 
+import com.fakeuslugi.EmailService;
 import com.fakeuslugi.TestEntity;
 import com.fakeuslugi.dao.TestDao;
 import lombok.extern.slf4j.Slf4j;
@@ -14,18 +15,39 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MainController {
 
     @Autowired
-    private TestDao testDao;
+    private EmailService emailService;
 
     @GetMapping
     public String mainPage() {
-        // TestEntity newEntity = new TestEntity();
-        // newEntity.setTestField(4L);
-        // newEntity.setContent("CONTENT2");
-        // testDao.saveTest(newEntity);
-        // testDao.findById(3L);
-        log.error("INSIDE MAIN CONTROLLER");
+        log.debug("Main page request");
 
 
         return "mainpage";
+    }
+
+    @GetMapping("mail")
+    public String mail(){
+        emailService.sendSimpleMessage("hramovalexey@yandex.ru", "testmess", "Hello test message");
+        return "";
+    }
+
+    @GetMapping("/ajax/orderlist")
+    public String orderlist() {
+        return "orderlist";
+    }
+
+    @GetMapping("/ajax/order")
+    public String order() {
+        return "order";
+    }
+
+    @GetMapping("/ajax/history")
+    public String history() {
+        return "history";
+    }
+
+    @GetMapping("/ajax/auth")
+    public String auth() {
+        return "auth";
     }
 }

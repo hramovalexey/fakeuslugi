@@ -2,6 +2,7 @@ package com.fakeuslugi.controller;
 
 import com.fakeuslugi.controller.dto.AuthDtoRequest;
 import com.fakeuslugi.controller.dto.CustomerDtoRequest;
+import com.fakeuslugi.controller.dto.CustomerDtoResponse;
 import com.fakeuslugi.security.Authority;
 import com.fakeuslugi.security.JwtTokenUtil;
 import com.fakeuslugi.security.dao.Customer;
@@ -36,14 +37,14 @@ public class AuthController extends AbstractController {
     @PostMapping(value = "register", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> register(@Valid @RequestBody CustomerDtoRequest customerRegRequest) {
         if (customerService.isExistingUser(customerRegRequest.getEmail())) { // TODO move to service
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User with such email already exists");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Такой пользователь уже существует");
         }
         customerService.createCustomer(Authority.USER, customerRegRequest);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping(value = "login", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> loginUser(@Valid @RequestBody AuthDtoRequest authDtoRequest) {
+    public ResponseEntity<CustomerDtoResponse> loginUser(@Valid @RequestBody AuthDtoRequest authDtoRequest) {
         try {
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(authDtoRequest.getEmail(), authDtoRequest.getPassword());
             Authentication authenticate = authenticationManager.authenticate(authToken);
@@ -52,7 +53,7 @@ public class AuthController extends AbstractController {
             log.debug("Authenticated user = " + customer.toString());
             return ResponseEntity.ok()
                     .header(HttpHeaders.AUTHORIZATION, jwtToken)
-                    .build();
+                    .body(new CustomerDtoResponse(customer));
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // 401
         }
@@ -60,13 +61,13 @@ public class AuthController extends AbstractController {
 
     @GetMapping("testuser")
     @ResponseBody
-    public ResponseEntity<String> testUser(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<CustomerDtoResponse> testUser(HttpServletRequest httpServletRequest) {
         Customer customer = (Customer) httpServletRequest.getAttribute("customer");
         if (customer != null) {
             log.debug("User ID authenticated: " + customer.getId());
-            return ResponseEntity.ok("Authenticated user: " + customer.toString());
+            return ResponseEntity.ok().body(new CustomerDtoResponse(customer));
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Something went wrong");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // in normal mode this string is inaccessible due to security action
     }
 
     /*@ExceptionHandler(MethodArgumentNotValidException.class)

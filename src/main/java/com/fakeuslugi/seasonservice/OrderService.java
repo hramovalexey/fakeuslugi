@@ -1,9 +1,9 @@
 package com.fakeuslugi.seasonservice;
 
+import com.fakeuslugi.EmailService;
 import com.fakeuslugi.controller.dto.OrderDtoRequest;
 import com.fakeuslugi.controller.dto.OrderDtoResponse;
 import com.fakeuslugi.controller.dto.ServiceDtoResponse;
-import com.fakeuslugi.controller.dto.StatusHistoryDtoResponse;
 import com.fakeuslugi.seasonservice.dao.*;
 import com.fakeuslugi.seasonservice.exception.SeasonServiceException;
 import com.fakeuslugi.security.dao.Customer;
@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 // Handling season services ordered by customers
@@ -30,6 +31,9 @@ public class OrderService {
     @Autowired
     private StatusHistoryDao statusHistoryDao;
 
+    @Autowired
+    private EmailService emailService;
+
     @Value("${default_creation_comment}")
     private String DEFAULT_CREATION_COMMENT;
 
@@ -41,7 +45,7 @@ public class OrderService {
         }
         long qtyProvidedServices = seasonServiceDao.countOrdersByServiceId(orderDtoRequest.getServiceId());
         if (qtyProvidedServices >= seasonService.getServiceLimit()) {
-            // TODO send email
+            // TODO send email too
             throw new SeasonServiceException("Limit of provided services exceeded. Check your email", HttpStatus.FORBIDDEN);
         }
         ProvidedService providedService = new ProvidedService();
@@ -52,12 +56,22 @@ public class OrderService {
         statusHistory.setExecutorComment(DEFAULT_CREATION_COMMENT);
         statusHistory.setProvidedService(providedService);
         providedService = seasonServiceDao.createProvidedService(providedService);
-        statusHistoryDao.createStatusHistory(statusHistory); // TODO add logging
-
+        statusHistoryDao.createStatusHistory(statusHistory);
+        String email = customer.getEmail();
+        long orderId = providedService.getId();
+        Executors.newSingleThreadExecutor().execute(() -> sendSuccessEmail(email, orderId));
         // TODO try to throw unchecked exception from here
 
         // providedService.getStatusHistory().add(statusHistory);
         return providedService;
+    }
+
+    private String createSuccessEmailMessage(long orderId) {
+        return "Услуга оказана. Номер вашей заявки: " + orderId;
+    }
+
+    private void sendSuccessEmail(String email, long orderId) {
+        emailService.sendSimpleMessage(email, "fakeuslugi status", createSuccessEmailMessage(orderId));
     }
 
     public List<ServiceDtoResponse> getServiceList() {

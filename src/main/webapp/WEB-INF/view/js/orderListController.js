@@ -24,6 +24,9 @@ fakeuslugi.controller("orderListController", function ($scope, $resource, $locat
             },
             function(error) {
                 console.error(error);
+                if (error.status == 401) {
+                    mainContr.clearJwt();
+                }
                 $scope.statusGetOrderList = mainContr.tryTransformJsonErrorMessageToString(error);
             }
         );

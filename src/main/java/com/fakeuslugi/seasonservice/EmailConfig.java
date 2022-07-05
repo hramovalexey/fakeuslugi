@@ -28,7 +28,7 @@ public class EmailConfig {
     @Bean
     public JavaMailSender getJavaMailSender() {
 
-
+// inbox.lv
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost(smtpHost);
         // mailSender.setPort(587); // tls
@@ -47,7 +47,7 @@ public class EmailConfig {
         props.put("mail.smtp.ssl.trust", "*");
         return mailSender;
 
-
+// Yandex
         /*JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.yandex.ru");
         mailSender.setPort(465);

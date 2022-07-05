@@ -16,21 +16,17 @@ import java.util.stream.Collectors;
 
 @Getter
 public class OrderDtoResponse {
-    // private final ZonedDateTime timestamp;
     private final Date date;
     private final long id;
     private final String name;
     private final String userComment;
-    // private final CustomerDtoResponse customer;
     private final List<StatusHistoryDtoResponse> statusHistory;
 
     public OrderDtoResponse(OrderInfo providedService, List<StatusHistory> statusHistoryList) {
-        // this.timestamp = providedService.getTimestamp().toString();
         this.date = Date.from(providedService.getTimestamp().toInstant());
         this.id = providedService.getId();
         this.name = providedService.getName();
         this.userComment = providedService.getUserComment();
-        // this.customer = new CustomerDtoResponse(customer);
         this.statusHistory = createHistoryList(statusHistoryList);
     }
 

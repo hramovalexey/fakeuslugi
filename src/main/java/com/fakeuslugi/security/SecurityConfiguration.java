@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private CustomerService customerService;
-    // private CustomerDao customerDao; // TODO take off?
     private JwtTokenFilter jwtTokenFilter;
 
     public SecurityConfiguration(CustomerService customerService, JwtTokenFilter jwtTokenFilter) {

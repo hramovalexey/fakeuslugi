@@ -55,18 +55,4 @@
           class="org.springframework.orm.hibernate5.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-
-
-    <!--<bean id="jsonMessageConverter"
-          class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>-->
-
-    <!-- Use JSON conversion for messages -->
-    <!--<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
-        <property name="messageConverters">
-            <list>
-                <ref bean="jsonMessageConverter"/>
-            </list>
-        </property>
-    </bean>-->
-
 </beans>

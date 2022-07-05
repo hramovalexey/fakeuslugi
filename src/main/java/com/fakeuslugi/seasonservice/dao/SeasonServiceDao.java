@@ -63,17 +63,10 @@ public class SeasonServiceDao {
     }
 
     public SeasonService findByName(String serviceRequest) {
-       //  Query<SeasonService> query = sessionFactory.getCurrentSession().createQuery("from SeasonService as s where s.name = :serviceRequest");
-        // query.setParameter("serviceRequest", serviceRequest);
-        // SeasonService result = query.uniqueResult();
         return simpleQueryServiceStringUnique.processQuery(SeasonService.class, "name", serviceRequest);
     }
 
     public SeasonService findById(long idRequest) {
-
-        // Query<SeasonService> query = sessionFactory.getCurrentSession().createQuery("from SeasonService as s where s.id = :idRequest");
-        // query.setParameter("idRequest", idRequest);
-        // SeasonService result = query.uniqueResult();
         return simpleQueryServiceLongUnique.processQuery(SeasonService.class, "id", idRequest);
     }
 

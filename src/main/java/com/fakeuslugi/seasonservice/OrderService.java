@@ -63,8 +63,6 @@ public class OrderService {
         long orderId = providedService.getId();
         Executors.newSingleThreadExecutor().execute(() -> sendSuccessEmail(email, orderId));
         log.debug("Provided service entity created: " + providedService.toString());
-
-        // providedService.getStatusHistory().add(statusHistory);
         return providedService;
     }
 
@@ -99,7 +97,7 @@ public class OrderService {
         return serviceDtoResponseList;
     }
 
-    public List<OrderDtoResponse> mapProvidedServiceToOrderDtoResponse(List<ProvidedService> providedServiceList) {
+    private List<OrderDtoResponse> mapProvidedServiceToOrderDtoResponse(List<ProvidedService> providedServiceList) {
         return providedServiceList.stream()
                 .map(serviceItem -> new OrderDtoResponse(serviceItem, serviceItem.getStatusHistory()))
                 .collect(Collectors.toList());

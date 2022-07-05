@@ -25,10 +25,11 @@
         <input type="text" id="email" ng-model="newCustomer.email"/>
 
         <label for="password">Пароль*</label>
-        <input type="text" id="password" ng-model="newCustomer.password"/></div>
+        <input type="text" id="password" ng-model="newCustomer.password"/>
+    </div>
     <button ng-click="doRegister()">Ok</button>
     <button ng-click="authMode='login'">авторизоваться</button>
-    <div>{{statusRegister}}</div>
+    <div class="status">{{statusRegister}}</div>
 </div>
 
 <div ng-show="authMode=='login'">
@@ -41,8 +42,8 @@
         <label for="passwordLog">Пароль</label>
         <input type="text" id="passwordLog" ng-model="loginCustomer.password"/></div>
     <button ng-click="doLogin()">Ok</button>
-    <button ng-click="authMode='reg'">зарегистрироваться</button
-    <div>{{statusLogin}}</div>
+    <button ng-click="authMode='register'">зарегистрироваться</button>
+    <div class="status">{{statusLogin}}</div>
 </div>
 <button ng-click="goOrderList()">К списку оказанных услуг</button>
 </body>

@@ -10,14 +10,45 @@
         border: 1px solid black;
     }
 
+    table {
+        margin: 10px;
+        margin-left: 0;
+    }
+
+    div {
+        margin: 10px;
+        margin-left: 0;
+    }
+
+    button {
+        display: block;
+        margin: 10px;
+        margin-left: 0;
+    }
+
+    input {
+        display: block;
+    }
+
+    .content{
+        width: max-content;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .status {
+        font-weight: bold;
+        color: blue;
+    }
+
 </style>
-<body ng-controller="mainController">
+<body class="content" ng-controller="mainController">
 
 <h1>Fakeuslugi</h1>
 <h2>{{thisUser}}</h2>
+<hr>
 <ng-view></ng-view>
 
-<%--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>--%>
 <script>
     <%@include file="js/lib/angular.min.js"%>
     <%@include file="js/lib/angular-resource.js"%>

@@ -9,7 +9,6 @@ import java.util.Date;
 
 @Getter
 public class StatusHistoryDtoResponse {
-    // private final String timestamp;
     private final Date date;
     private final String statusName;
     private final String executorComment;

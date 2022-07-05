@@ -18,7 +18,6 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor
 @Slf4j
-// @NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
 public class ProvidedService implements OrderInfo {
 
     @Id

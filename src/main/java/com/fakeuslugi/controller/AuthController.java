@@ -69,13 +69,4 @@ public class AuthController extends AbstractController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // in normal mode this string is inaccessible due to security action
     }
-
-    /*@ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<HashMap<String, List<String>>> handleValidationException(MethodArgumentNotValidException e) {
-        HashMap<String, List<String>> errors = new HashMap<>();
-        for (ObjectError error : e.getBindingResult().getAllErrors()) {
-            errors.computeIfAbsent("error", k -> new ArrayList<>()).add(error.getDefaultMessage());
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
-    }*/
 }

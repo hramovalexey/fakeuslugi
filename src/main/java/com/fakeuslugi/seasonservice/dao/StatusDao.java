@@ -1,10 +1,8 @@
 package com.fakeuslugi.seasonservice.dao;
 
 import com.fakeuslugi.daoutil.QueryFromWhereUniqueProcessor;
-import com.fakeuslugi.security.dao.Customer;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -12,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 
-// TODO Make template method for all DAOs
 @Repository
 @Transactional
 @Slf4j
@@ -42,9 +39,6 @@ public class StatusDao {
     }
 
     public Status findByName(String statusRequest) {
-        // Query<Status> query = sessionFactory.getCurrentSession().createQuery("from Status as s where s.name = :statusRequest");
-        // query.setParameter("statusRequest", statusRequest);
-        // Status result = query.uniqueResult();
         return simpleQueryStatusStringUnique.processQuery(Status.class, "name", statusRequest);
     }
 

@@ -3,7 +3,6 @@ currentUserObj = null;
 fakeuslugi.controller("mainController", function ($scope, $rootScope, $resource, $window, $location) {
     console.log("main controller started");
     mainContr = $scope;
-    // BASE_URL = "http://" + $location.host() + ":" + $location.port() + "/";
     BASE_URL = $location.$$absUrl;
     let WELLCOME_MESSAGE = '\u0414\u043e\u0431\u0440\u043e\u0020\u043f\u043e\u0436\u0430\u043b\u043e\u0432\u0430\u0442\u044c\u002c';
     let DEFAULT_NO_USER_MESSAGE = '\u0410\u0432\u0442\u043e\u0440\u0438\u0437\u0443\u0439\u0442\u0435\u0441\u044c\u0020\u0438\u043b\u0438\u0020\u0437\u0430\u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0438\u0440\u0443\u0439\u0442\u0435\u0441\u044c';
@@ -11,36 +10,6 @@ fakeuslugi.controller("mainController", function ($scope, $rootScope, $resource,
     $scope.currentUserObj = currentUserObj;
     currentUserObj = null;
     $scope.currentServiceList = null;
-
-    /*$scope.setUserNameByJwt = function () {
-        let name = getUserNameByJwt();
-        if (!name) {
-            clearJwt();
-        }
-        $scope.thisUser = name;
-    }*/
-
-    /*let getUserNameByJwt = function () {
-        let jwt = $window.localStorage.getItem("fakeuslugi");
-        if (!jwt) {
-            return "";
-        }
-        let arr = jwt.split('.');
-        if (arr.length < 2) {
-            return "";
-        }
-        try {
-            let parsed = atob(arr[1]);
-            let json = {};
-            json = JSON.parse(parsed);
-            if (json.hasOwnProperty('sub')) {
-                return json.sub;
-            }
-        } catch (e) {
-            return "";
-        }
-        return "";
-    }*/
 
     $scope.actions = {
         post: {
@@ -77,7 +46,6 @@ fakeuslugi.controller("mainController", function ($scope, $rootScope, $resource,
                     status: status,
                     data: data,
                     headers: headers,
-                    // data: data
                 };
                 return response;
             }

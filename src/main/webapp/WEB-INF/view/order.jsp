@@ -35,7 +35,7 @@
 <input ng-model="inputComment" type="text"/>
 </div>
 
-<div>{{statusOrder}}</div>
+<div class="status">{{statusOrder}}</div>
 <div ng-show="!isSuccessSent">
     <button ng-click="doOrder()" ng-disabled="!inputService || inputService.currentLimit <= 0" ng-click="">Отправить</button>
     <button ng-click="goOrderList()">Отмена</button>

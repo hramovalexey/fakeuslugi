@@ -11,7 +11,6 @@ import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 
-// @Table(name="user_table")
 @Entity
 @Data
 @RequiredArgsConstructor

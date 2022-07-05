@@ -60,7 +60,6 @@ fakeuslugi.controller("authController", function ($scope, $routeParams, $locatio
                     if (response.status == 200 && jwt) {
                         mainContr.setJwt(jwt);
                         mainContr.setCurrentUser(JSON.parse(response.data));
-                        // mainContr.currentUserObj = JSON.parse(response.data);
                         $location.path('/');
                     } else {
                         $scope.statusLogin = INCORRECT_CREDENTIALS;

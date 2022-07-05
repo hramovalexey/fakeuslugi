@@ -32,9 +32,6 @@ public class CustomerDao {
     }
 
     public Customer findByEmail(String emailRequest) {
-        // Query<Customer> query = sessionFactory.getCurrentSession().createQuery("from Customer as c where c.email = :emailRequest");
-        // query.setParameter("emailRequest", emailRequest);
-        // Customer result = query.uniqueResult();
         return simpleQueryCustomerStringUnique.processQuery(Customer.class, "email", emailRequest);
     }
 }

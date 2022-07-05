@@ -3,6 +3,13 @@ package com.fakeuslugi.daoutil;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
+/**
+ * Implementation of {@link SimpleQueryProcessorAbstract} class for HQL requests processing like:
+ * from Entity as t where s.fieldName = :request
+ * @param <T> the type of the returned object
+ * @param <S> the type of the input parameter
+ */
+
 public class QueryFromWhereUniqueProcessor<T, S> extends SimpleQueryProcessorAbstract<T, S> {
 
     private SessionFactory sessionFactory;

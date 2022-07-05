@@ -21,12 +21,11 @@
             <td>{{getDateString(order.date)}}</td>
             <td>{{order.id}}</td>
             <td>{{order.name}}</td>
-
         </tr>
     </table>
 
 </div>
-<div ng-show="currentOrderList != null && currentOrderList.orders.length == 0">
+<div class="status" ng-show="currentOrderList != null && currentOrderList.orders.length == 0">
     Оказанных услуг нет
 </div>
 

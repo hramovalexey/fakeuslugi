@@ -25,16 +25,16 @@ public class CustomerService implements UserDetailsService {
 
     public UserDetails createCustomer(String authorityName, CustomerDtoRequest customerRegRequest){
 
-
-        // TODO make static factory
         Authority authority = new Authority(authorityName);
-        if (authority == null) { // TODO take off
+        if (authority == null) {
             log.error("No such authority name found: " + authorityName);
             throw new IllegalArgumentException("No such authority name found: " + authorityName);
         }
         String password = passwordEncoder.encode(customerRegRequest.getPassword());
         Customer customer = new Customer(authority, password, customerRegRequest.getName(), customerRegRequest.getSecondName(), customerRegRequest.getEmail(), ZonedDateTime.now());
-        // TODO add thirdName
+        if (!customerRegRequest.getThirdName().isEmpty()) {
+            customer.setThirdName(customerRegRequest.getThirdName());
+        }
         customer.setAccountNonExpired(true);
         customer.setAccountNonLocked(true);
         customer.setCredentialsNonExpired(true);

@@ -9,7 +9,6 @@ package com.fakeuslugi;
 
 // @ContextConfiguration(locations = {"/spring-config.xml"})
 
-import com.fakeuslugi.dao.TestDao;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,9 +28,9 @@ class FakeuslugiApplicationTests {
     void contextLoads() {
         // testDao.findById(3L);
 
-        TestEntity te = new TestEntity();
+        // TestEntity te = new TestEntity();
         log.info("INSIDE TEST");
-        Assertions.assertNotNull(te);
+        // Assertions.assertNotNull(te);
     }
 
 }

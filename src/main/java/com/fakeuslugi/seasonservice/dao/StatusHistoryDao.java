@@ -15,21 +15,9 @@ public class StatusHistoryDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-    @Autowired
-    private StatusDao statusDao;
-
     public StatusHistory createStatusHistory(StatusHistory statusHistory) {
         sessionFactory.getCurrentSession().save(statusHistory);
+        log.debug("StatusHistory entity created: " + statusHistory.toString());
         return statusHistory;
     }
-
-    /*public StatusHistory createStatusHistory(Status status, String executorComment) {
-
-        // StatusHistory statusHistory = new StatusHistory(ZonedDateTime.now(), status);
-        statusHistory.setExecutorComment(executorComment);
-        sessionFactory.getCurrentSession().save(statusHistory);
-        return statusHistory;
-    }*/
-
-
 }

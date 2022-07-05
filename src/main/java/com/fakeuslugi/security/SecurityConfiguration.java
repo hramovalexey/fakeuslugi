@@ -26,11 +26,11 @@ import javax.servlet.http.HttpServletResponse;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private CustomerService customerService;
-    private CustomerDao customerDao; // TODO take off?
+    // private CustomerDao customerDao; // TODO take off?
     private JwtTokenFilter jwtTokenFilter;
 
-    public SecurityConfiguration(CustomerDao customerDao, CustomerService customerService, JwtTokenFilter jwtTokenFilter) {
-        this.customerDao = customerDao;
+    public SecurityConfiguration(CustomerService customerService, JwtTokenFilter jwtTokenFilter) {
+       //  this.customerDao = customerDao;
         this.customerService = customerService;
         this.jwtTokenFilter = jwtTokenFilter;
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);

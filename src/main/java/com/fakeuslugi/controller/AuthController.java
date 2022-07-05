@@ -36,7 +36,7 @@ public class AuthController extends AbstractController {
 
     @PostMapping(value = "register", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> register(@Valid @RequestBody CustomerDtoRequest customerRegRequest) {
-        if (customerService.isExistingUser(customerRegRequest.getEmail())) { // TODO move to service
+        if (customerService.isExistingUser(customerRegRequest.getEmail())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Такой пользователь уже существует");
         }
         customerService.createCustomer(Authority.USER, customerRegRequest);

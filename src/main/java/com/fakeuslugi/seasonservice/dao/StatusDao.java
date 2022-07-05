@@ -1,5 +1,6 @@
 package com.fakeuslugi.seasonservice.dao;
 
+import com.fakeuslugi.daoutil.QueryFromWhereUniqueProcessor;
 import com.fakeuslugi.security.dao.Customer;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.PostConstruct;
 
 // TODO Make template method for all DAOs
 @Repository
@@ -19,6 +22,13 @@ public class StatusDao {
 
     @Value("${default_initial_status}")
     private String DEFAULT_INITIAL_STATUS;
+
+    private QueryFromWhereUniqueProcessor<Status, String> simpleQueryStatusStringUnique;
+
+    @PostConstruct
+    private void postConstruct() {
+        this.simpleQueryStatusStringUnique = new QueryFromWhereUniqueProcessor<>(sessionFactory);
+    }
 
     public Status tryCreateStatus(String statusName) {
         Status statusChecked = findByName(statusName);
@@ -32,10 +42,10 @@ public class StatusDao {
     }
 
     public Status findByName(String statusRequest) {
-        Query<Status> query = sessionFactory.getCurrentSession().createQuery("from Status as s where s.name = :statusRequest");
-        query.setParameter("statusRequest", statusRequest);
-        Status result = query.uniqueResult();
-        return result;
+        // Query<Status> query = sessionFactory.getCurrentSession().createQuery("from Status as s where s.name = :statusRequest");
+        // query.setParameter("statusRequest", statusRequest);
+        // Status result = query.uniqueResult();
+        return simpleQueryStatusStringUnique.processQuery(Status.class, "name", statusRequest);
     }
 
     public Status getInitialStatus() {

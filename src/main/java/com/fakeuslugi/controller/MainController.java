@@ -1,8 +1,6 @@
 package com.fakeuslugi.controller;
 
-import com.fakeuslugi.EmailService;
-import com.fakeuslugi.TestEntity;
-import com.fakeuslugi.dao.TestDao;
+import com.fakeuslugi.seasonservice.EmailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,12 +18,10 @@ public class MainController {
     @GetMapping
     public String mainPage() {
         log.debug("Main page request");
-
-
         return "mainpage";
     }
 
-    @GetMapping("mail")
+    @GetMapping("testmail")
     public String mail(){
         emailService.sendSimpleMessage("hramovalexey@yandex.ru", "testmess", "Hello test message");
         return "";

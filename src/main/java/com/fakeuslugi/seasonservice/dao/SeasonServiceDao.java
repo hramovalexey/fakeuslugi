@@ -1,19 +1,15 @@
 package com.fakeuslugi.seasonservice.dao;
 
-import com.fakeuslugi.security.dao.Customer;
+import com.fakeuslugi.daoutil.QueryFromWhereUniqueProcessor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import java.util.Iterator;
+import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.Set;
 
 @Repository
 @Transactional
@@ -25,8 +21,15 @@ public class SeasonServiceDao {
     @Autowired
     private StatusHistoryDao statusHistoryDao;
 
-/*    @Value("${default_creation_comment}")
-    private String DEFAULT_CREATION_COMMENT;*/
+    private QueryFromWhereUniqueProcessor<SeasonService, String> simpleQueryServiceStringUnique;
+    private QueryFromWhereUniqueProcessor<SeasonService, Long> simpleQueryServiceLongUnique;
+
+    // Init query processors
+    @PostConstruct
+    private void postConstruct() {
+        this.simpleQueryServiceStringUnique = new QueryFromWhereUniqueProcessor<>(sessionFactory);
+        this.simpleQueryServiceLongUnique = new QueryFromWhereUniqueProcessor<>(sessionFactory);
+    }
 
     /**
     * Check if SeasonService with given service name exists
@@ -60,17 +63,18 @@ public class SeasonServiceDao {
     }
 
     public SeasonService findByName(String serviceRequest) {
-        Query<SeasonService> query = sessionFactory.getCurrentSession().createQuery("from SeasonService as s where s.name = :serviceRequest");
-        query.setParameter("serviceRequest", serviceRequest);
-        SeasonService result = query.uniqueResult();
-        return result;
+       //  Query<SeasonService> query = sessionFactory.getCurrentSession().createQuery("from SeasonService as s where s.name = :serviceRequest");
+        // query.setParameter("serviceRequest", serviceRequest);
+        // SeasonService result = query.uniqueResult();
+        return simpleQueryServiceStringUnique.processQuery(SeasonService.class, "name", serviceRequest);
     }
 
     public SeasonService findById(long idRequest) {
-        Query<SeasonService> query = sessionFactory.getCurrentSession().createQuery("from SeasonService as s where s.id = :idRequest");
-        query.setParameter("idRequest", idRequest);
-        SeasonService result = query.uniqueResult();
-        return result;
+
+        // Query<SeasonService> query = sessionFactory.getCurrentSession().createQuery("from SeasonService as s where s.id = :idRequest");
+        // query.setParameter("idRequest", idRequest);
+        // SeasonService result = query.uniqueResult();
+        return simpleQueryServiceLongUnique.processQuery(SeasonService.class, "id", idRequest);
     }
 
     public long countOrdersByServiceId(long serviceId) {

@@ -80,7 +80,7 @@ Content-Type: application/json
 Authorization: Bearer {{jwt}}
 
 {
-    "serviceId": 1,
+    "serviceId": 3,
     "userComment": "no mercy"
 }
 
@@ -124,4 +124,4 @@ Content-Type: application/json
 Authorization: Bearer {{jwt}}
 
 ### Test email
-GET http://localhost:8080/mail
+GET http://localhost:8080/testmail

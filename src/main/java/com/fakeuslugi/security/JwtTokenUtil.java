@@ -10,6 +10,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.SignatureException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Base64;
 import java.util.Date;
@@ -18,10 +19,10 @@ import java.util.Map;
 
 @Slf4j
 public class JwtTokenUtil {
+    
+    private final static String JWT_SECRET = "lpulD3JK56m6wTTgsNFhqzjqP";
 
-    // TODO inject from props?
-    private final String JWT_SECRET = "lpulD3JK56m6wTTgsNFhqzjqP";
-    private final String JWT_ISSUER = "fakeuslugi";
+    private final static String JWT_ISSUER = "fakeuslugi";
 
     public String generateAccessToken(Customer customer) {
         String token = Jwts.builder()

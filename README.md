@@ -1,2 +1,3 @@
 # fakeuslugi
  
+mvn clean package

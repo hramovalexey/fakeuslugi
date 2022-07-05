@@ -1,4 +1,4 @@
-package com.fakeuslugi;
+package com.fakeuslugi.seasonservice;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

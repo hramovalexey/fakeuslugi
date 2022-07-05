@@ -1,12 +1,13 @@
 package com.fakeuslugi.seasonservice;
 
-import com.fakeuslugi.EmailService;
 import com.fakeuslugi.controller.dto.OrderDtoRequest;
 import com.fakeuslugi.controller.dto.OrderDtoResponse;
+import com.fakeuslugi.controller.dto.OrderListDto;
 import com.fakeuslugi.controller.dto.ServiceDtoResponse;
 import com.fakeuslugi.seasonservice.dao.*;
 import com.fakeuslugi.seasonservice.exception.SeasonServiceException;
 import com.fakeuslugi.security.dao.Customer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 // Handling season services ordered by customers
 @Service
+@Slf4j
 public class OrderService {
     @Autowired
     private SeasonServiceDao seasonServiceDao;
@@ -60,7 +62,7 @@ public class OrderService {
         String email = customer.getEmail();
         long orderId = providedService.getId();
         Executors.newSingleThreadExecutor().execute(() -> sendSuccessEmail(email, orderId));
-        // TODO try to throw unchecked exception from here
+        log.debug("Provided service entity created: " + providedService.toString());
 
         // providedService.getStatusHistory().add(statusHistory);
         return providedService;
@@ -80,10 +82,11 @@ public class OrderService {
     }
 
     @Transactional
-    public List<OrderDtoResponse> getOrderList(Customer customer) {
+    public OrderListDto getOrderList(Customer customer) {
         long statusId = statusDao.getInitialStatus().getId();
         List<ProvidedService> orderList = seasonServiceDao.getOrderList(customer.getId(), statusId);
-        return mapProvidedServiceToOrderDtoResponse(orderList);
+        List<OrderDtoResponse> orderDtoResponseList = mapProvidedServiceToOrderDtoResponse(orderList);
+        return new OrderListDto(orderDtoResponseList, customer);
     }
 
     private List<ServiceDtoResponse> mapSeasonServiceToServiceDtoResponce(List<SeasonService> seasonServiceList) {
@@ -98,7 +101,7 @@ public class OrderService {
 
     public List<OrderDtoResponse> mapProvidedServiceToOrderDtoResponse(List<ProvidedService> providedServiceList) {
         return providedServiceList.stream()
-                .map(serviceItem -> new OrderDtoResponse(serviceItem, serviceItem.getCustomer(), serviceItem.getStatusHistory()))
+                .map(serviceItem -> new OrderDtoResponse(serviceItem, serviceItem.getStatusHistory()))
                 .collect(Collectors.toList());
     }
 

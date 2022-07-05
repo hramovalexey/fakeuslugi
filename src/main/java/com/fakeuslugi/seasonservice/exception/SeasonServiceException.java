@@ -3,7 +3,7 @@ package com.fakeuslugi.seasonservice.exception;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-// Custom Exception for more precise error handling
+// Custom Exception for more precise error handling in controllers
 public class SeasonServiceException extends RuntimeException {
 
     @Getter

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Landing</title>
+    <title>Auth</title>
 </head>
 <body>
 
@@ -29,7 +29,6 @@
     <button ng-click="doRegister()">Ok</button>
     <button ng-click="authMode='login'">авторизоваться</button>
     <div>{{statusRegister}}</div>
-    <div ng-bind="statusRegister"></div>
 </div>
 
 <div ng-show="authMode=='login'">
@@ -42,8 +41,8 @@
         <label for="passwordLog">Пароль</label>
         <input type="text" id="passwordLog" ng-model="loginCustomer.password"/></div>
     <button ng-click="doLogin()">Ok</button>
-    <button ng-click="authMode='reg'">зарегистрироваться</button>
+    <button ng-click="authMode='reg'">зарегистрироваться</button
     <div>{{statusLogin}}</div>
-    <div ng-bind="statusLogin"></div>
 </div>
+<button ng-click="goOrderList()">К списку оказанных услуг</button>
 </body>

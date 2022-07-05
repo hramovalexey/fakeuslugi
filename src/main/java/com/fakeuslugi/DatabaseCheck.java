@@ -44,7 +44,7 @@ public class DatabaseCheck {
         }
         if (!isInitialStatusPresent()) {
             log.error("Property status_list is inconsistent with property default_initial_status. Check them at application.properties file. Application stopped");
-            configurableApplicationContext.stop(); // TODO CHECK
+            configurableApplicationContext.stop();
             System.exit(1);
         }
         log.info("table Status checked");

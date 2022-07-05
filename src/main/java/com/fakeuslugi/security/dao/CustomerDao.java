@@ -1,11 +1,15 @@
 package com.fakeuslugi.security.dao;
 
+import com.fakeuslugi.daoutil.QueryFromWhereUniqueProcessor;
+import com.fakeuslugi.seasonservice.dao.SeasonService;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.PostConstruct;
 
 @Repository
 @Transactional
@@ -14,6 +18,13 @@ public class CustomerDao {
     @Autowired
     private SessionFactory sessionFactory;
 
+    private QueryFromWhereUniqueProcessor<Customer, String> simpleQueryCustomerStringUnique;
+
+    @PostConstruct
+    private void postConstruct() {
+        this.simpleQueryCustomerStringUnique = new QueryFromWhereUniqueProcessor<>(sessionFactory);
+    }
+
     public Customer createCustomer(Customer newCustomer) {
         sessionFactory.getCurrentSession().save(newCustomer);
         log.debug("New customer created " + newCustomer.toString());
@@ -21,9 +32,9 @@ public class CustomerDao {
     }
 
     public Customer findByEmail(String emailRequest) {
-        Query<Customer> query = sessionFactory.getCurrentSession().createQuery("from Customer as c where c.email = :emailRequest");
-        query.setParameter("emailRequest", emailRequest);
-        Customer result = query.uniqueResult();
-        return result;
+        // Query<Customer> query = sessionFactory.getCurrentSession().createQuery("from Customer as c where c.email = :emailRequest");
+        // query.setParameter("emailRequest", emailRequest);
+        // Customer result = query.uniqueResult();
+        return simpleQueryCustomerStringUnique.processQuery(Customer.class, "email", emailRequest);
     }
 }

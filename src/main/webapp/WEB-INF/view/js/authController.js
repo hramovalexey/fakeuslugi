@@ -14,23 +14,7 @@ fakeuslugi.controller("authController", function ($scope, $routeParams, $locatio
     $scope.statusRegister = "";
     $scope.statusLogin = "";
 
-    function getErrorMessage(errorObj) {
-        if (!errorObj.hasOwnProperty("data") || !errorObj.data.hasOwnProperty("data")) {
-            return "";
-        }
-        let errorData = errorObj.data.data;
-        let message = "";
-        try {
-            errorData = JSON.parse(errorData);
-            if (errorData.hasOwnProperty("error") && Array.isArray(errorData.error)) {
-                let initMessage = "";
-                message = errorData.error.reduce((prev, current) => prev + " " + current, initMessage);
-            }
-        } catch (e) {
-            message = "" + errorData;
-        }
-        return message;
-    }
+
 
     $scope.doRegister = function () {
         $scope.statusRegister = "";
@@ -52,7 +36,7 @@ fakeuslugi.controller("authController", function ($scope, $routeParams, $locatio
                     }
                 }, function (error) {
 
-                    $scope.statusRegister = getErrorMessage(error);
+                    $scope.statusRegister = mainContr.tryTransformJsonErrorMessageToString(error);
                 }
             );
         } else {
@@ -95,5 +79,7 @@ fakeuslugi.controller("authController", function ($scope, $routeParams, $locatio
         mainContr.doLogOut();
     }
 
-    // $scope.$digest();
+    $scope.goOrderList = function () {
+        $location.path('/');
+    }
 });
